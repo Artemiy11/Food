@@ -10,6 +10,7 @@ function tabs() {
 
     function showTabContent(i) {
         tabContent[i].style.display = 'block';
+        tabContent[i].style.backgroundColor = 'red';
         tabs[i].classList.add('tabheader__item_active');
     }
 

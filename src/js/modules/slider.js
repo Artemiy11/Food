@@ -1,30 +1,31 @@
 function slider() {
-    const slider = document.querySelector('.offer__slider'),
-    img = document.querySelectorAll('.offer__slide'),
-    prev = document.querySelector('.offer__slider-prev'),
-    next = document.querySelector('.offer__slider-next'),
-    total = document.querySelector('#total'),
-    current = document.querySelector('#current'),
-    slidesWrapper = document.querySelector('.offer__slider-wrapper'),
-    slidesField = document.querySelector('.offer__slider-inner'),
+  const slider = document.querySelector(".offer__slider"),
+    img = document.querySelectorAll(".offer__slide"),
+    prev = document.querySelector(".offer__slider-prev"),
+    next = document.querySelector(".offer__slider-next"),
+    total = document.querySelector("#total"),
+    current = document.querySelector("#current"),
+    slidesWrapper = document.querySelector(".offer__slider-wrapper"),
+    slidesField = document.querySelector(".offer__slider-inner"),
     width = window.getComputedStyle(slidesField).width;
-let   index = 1,
+  let index = 1,
     offset = 0;
 
-slidesField.style.width = 100 * img.length + '%'; //делаем карусель такой длины, чтобы уместились все слайды
-slidesField.style.display = 'flex';               //устанавливаем flex, чтобы картинки стояли горизонтально
-slidesField.style.transition = '0.5s all';        
+  slidesField.style.width = 100 * img.length + "%"; //делаем карусель такой длины, чтобы уместились все слайды
+  slidesField.style.display = "flex"; //устанавливаем flex, чтобы картинки стояли горизонтально
+  slidesField.style.transition = "0.5s all";
 
-slidesWrapper.style.overflow = 'hidden';          //скрываем неактивные слайды
+  slidesWrapper.style.overflow = "hidden"; //скрываем неактивные слайды
 
-img.forEach(slide => {                            //устанавливаем ширину картинок как видимый блок
-  slide.style.width = width;
-});
+  img.forEach((slide) => {
+    //устанавливаем ширину картинок как видимый блок
+    slide.style.width = width;
+  });
 
-const indicators = document.createElement('ol'),
+  const indicators = document.createElement("ol"),
     dots = [];
 
-indicators.style.cssText = `
+  indicators.style.cssText = `
   position: absolute;
   right: 0;
   bottom: 0;
@@ -37,13 +38,13 @@ indicators.style.cssText = `
   list-style: none;
 `;
 
-slider.style.position = 'relative';
-slider.appendChild(indicators);
+  slider.style.position = "relative";
+  slider.appendChild(indicators);
 
-for (let i = 0; i < img.length; i++) {
-  const dot = document.createElement('li');
-  dot.classList.add('dot');
-  dot.style.cssText = `
+  for (let i = 0; i < img.length; i++) {
+    const dot = document.createElement("li");
+    dot.classList.add("dot");
+    dot.style.cssText = `
       box-sizing: content-box;
       flex: 0 1 auto;
       width: 30px;
@@ -59,87 +60,87 @@ for (let i = 0; i < img.length; i++) {
       transition: opacity .6s ease;
   `;
 
-  dot.getAttribute('data-slide-to', i + 1);
-  indicators.appendChild(dot);
-  dots.push(dot);
+    dot.getAttribute("data-slide-to", i + 1);
+    indicators.appendChild(dot);
+    dots.push(dot);
 
-  if (i == 0) {
+    if (i == 0) {
       dot.style.opacity = 1;
-  };
+    }
+  }
 
-};
+  indicators.addEventListener("click", (e) => {
+    if (e.target && e.target.classList.contains("dot")) {
+      dots.forEach((dot, i) => {
+        if (e.target == dot) {
+          index = i + 1;
 
-indicators.addEventListener('click', (e) => {
-  if (e.target && e.target.classList.contains('dot')) {
-      dots.forEach((dot, i) => {  
-          if (e.target == dot) {
-              index = i + 1;
+          offset = +width.replace(/\D/g, "") * (index - 1);
+          slidesField.style.transform = `translateX(-${offset}px)`;
 
-              offset = +width.replace(/\D/g, '') * (index - 1);
-              slidesField.style.transform = `translateX(-${offset}px)`; 
+          dots.forEach((dot) => (dot.style.opacity = ".5"));
+          dot.style.opacity = 1;
 
-              dots.forEach(dot => dot.style.opacity = '.5');
-              dot.style.opacity = 1;
-
-              checkNum();
-          };
+          checkNum();
+        }
       });
-  };
-});
+    }
+  });
 
-next.addEventListener('click', () => {
-  if (offset == +width.replace(/\D/g, '') * (img.length - 1)) {   //если слайд прокрутился до максимума, то его положение - 0
+  next.addEventListener("click", () => {
+    if (offset == +width.replace(/\D/g, "") * (img.length - 1)) {
+      //если слайд прокрутился до максимума, то его положение - 0
       offset = 0;
-  } else {
-      offset += +width.replace(/\D/g, '')                         //прибавляем к положению одно деление слайда
-  }
-  slidesField.style.transform = `translateX(-${offset}px)`;       //добавляем возможность изменять положение слайдов
+    } else {
+      offset += +width.replace(/\D/g, ""); //прибавляем к положению одно деление слайда
+    }
+    slidesField.style.transform = `translateX(-${offset}px)`; //добавляем возможность изменять положение слайдов
 
-  if (index == img.length) {                                      //логика нумерации
+    if (index == img.length) {
+      //логика нумерации
       index = 1;
-  } else {
+    } else {
       index++;
-  };
+    }
 
-  dots.forEach(dot => dot.style.opacity = '.5');
-  dots[index - 1].style.opacity = 1;
+    dots.forEach((dot) => (dot.style.opacity = ".5"));
+    dots[index - 1].style.opacity = 1;
 
-  checkNum();
-});
+    checkNum();
+  });
 
-prev.addEventListener('click', () => {
-  if (offset == 0) {
-      offset = +width.replace(/\D/g, '') * (img.length - 1);
-  } else {
-      offset -= +width.replace(/\D/g, '')
-  }
+  prev.addEventListener("click", () => {
+    if (offset == 0) {
+      offset = +width.replace(/\D/g, "") * (img.length - 1);
+    } else {
+      offset -= +width.replace(/\D/g, "");
+    }
 
-  slidesField.style.transform = `translateX(-${offset}px)`;
+    slidesField.style.transform = `translateX(-${offset}px)`;
 
-  if (index == 1) {
+    if (index == 1) {
       index = img.length;
-  } else {
+    } else {
       index--;
-  };
+    }
 
-  dots.forEach(dot => dot.style.opacity = '.5');
-  dots[index - 1].style.opacity = 1;
+    dots.forEach((dot) => (dot.style.opacity = ".5"));
+    dots[index - 1].style.opacity = 1;
 
-  checkNum();
-});
+    checkNum();
+  });
 
-function checkNum() {
-  if (img.length < 10) {
+  function checkNum() {
+    if (img.length < 10) {
       current.textContent = `0${index}`;
       total.textContent = `0${img.length}`;
-  } else {
+    } else {
       current.textContent = index;
       total.textContent = img.length;
-  };
+    }
+  }
+
+  checkNum();
 }
-
-checkNum();
-
-};
 
 export default slider;
