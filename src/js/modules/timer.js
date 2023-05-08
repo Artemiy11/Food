@@ -1,5 +1,8 @@
 function timer() {
-    const deadline = '2020-06-21';
+    let deadline = new Date();
+    deadline.setDate(deadline.getDate() + 2);
+    deadline = deadline.toISOString().slice(0, 10);
+
 
     function getTimeRemaining(endtime) {
         const t = Date.parse(endtime) - Date.parse(new Date());
